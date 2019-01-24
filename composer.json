@@ -6,6 +6,7 @@
     "type": "project",
     "require": {
         "php": ">=7.0.0",
+        "dingo/api": "^2.0.0-alpha2",
         "doctrine/dbal": "^2.9",
         "fideloper/proxy": "~4.0",
         "guzzlehttp/guzzle": "~6.3",
@@ -68,5 +69,7 @@
         "preferred-install": "dist",
         "sort-packages": true,
         "optimize-autoloader": true
-    }
+    },
+    "minimum-stability" : "dev",
+    "prefer-stable" : true
 }
