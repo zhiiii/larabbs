@@ -6,6 +6,7 @@
     "type": "project",
     "require": {
         "php": ">=7.0.0",
+        "doctrine/dbal": "^2.9",
         "fideloper/proxy": "~4.0",
         "guzzlehttp/guzzle": "~6.3",
         "hieu-le/active": "~3.5",
@@ -15,6 +16,7 @@
         "laravel/tinker": "~1.0",
         "mews/captcha": "~2.0",
         "mews/purifier": "~2.0",
+        "overtrue/easy-sms": "^1.1",
         "overtrue/laravel-lang": "~3.0",
         "overtrue/pinyin": "~3.0",
         "predis/predis": "~1.0",
