@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Api;
 
 use App\Http\Requests\UserRequest;
 use App\Models\User;
+use App\Transformers\UserTransformer;
 
 class UsersController extends Controller
 {
@@ -19,13 +20,25 @@ class UsersController extends Controller
 			return $this->response->erroUnauthorized('验证码有误');
 		}
 
-		User::create([
+		$user = User::create([
 			'name' => $request->name,
 			'phone' => $verifyData['phone'],
+			'email' => $request->email,
 			'password' => bcrypt($request->password)
 		]);
 
 		\Cache::forget($request->verification_key);
-		return $this->response->created();
+//		return $this->response->created();
+		return $this->response->item($user, new UserTransformer())
+			->setMeta([
+				'access_token' => \Auth::guard('api')->fromUser($user),
+				'token_type' => 'Bearer',
+				'expires_in' => \Auth::guard('api')->factory()->getTTL() * 60
+			])->setStatusCode(201);
+	}
+
+	public function me(UserTransformer $userTransformer)
+	{
+		return $this->response->item($this->user(), $userTransformer);
 	}
 }

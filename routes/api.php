@@ -36,4 +36,20 @@ $api->version('v1', [
 		// 删除token
 		$api->delete('authorizations/current', 'AuthorizationsController@destory');
 	});
+
+	$api->group([
+		'middleware' => ['api.throttle'],
+		'limit' => config('api.rate_limits.access.limit'),
+		'expires' => config('api.rate_limits.access.expires')
+	], function ($api) {
+		// 游客可以访问的接口
+
+		// 需要token验证的接口
+		$api->group([
+			'middleware' => ['api.auth'],
+		], function ($api) {
+			// 当前登录用户信息
+			$api->get('user', 'UsersController@me')->name('api.user.show');
+		});
+	});
 });
