@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Api;
 
 use App\Http\Requests\UserRequest;
+use App\Models\Image;
 use App\Models\User;
 use App\Transformers\UserTransformer;
 
@@ -37,8 +38,34 @@ class UsersController extends Controller
 			])->setStatusCode(201);
 	}
 
+	/**
+	 * 获取用户信息
+	 * @param UserTransformer $userTransformer
+	 * @return \Dingo\Api\Http\Response
+	 */
 	public function me(UserTransformer $userTransformer)
 	{
 		return $this->response->item($this->user(), $userTransformer);
+	}
+
+	/**
+	 * 编辑用户信息
+	 * @param UserRequest $request
+	 * @return \Dingo\Api\Http\Response
+	 */
+	public function update(UserRequest $request)
+	{
+		$user = $this->user();
+
+		$attributes =$request->only(['name', 'email', 'introduction']);
+
+		if ($imageId = $request->avatar_image_id) {
+			$image = Image::find($imageId);
+
+			$attributes['avatar'] = $image->path;
+		}
+		$user->update($attributes);
+
+		return $this->response->item($user, new UserTransformer());
 	}
 }

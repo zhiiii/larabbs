@@ -16,7 +16,9 @@ $api->version('v1', [
     'namespace' => 'App\Http\Controllers\Api',
 ], function ($api) {
 
+	// 未登录
 	$api->group([
+		// 节流限制设定
 		'middleware' => ['api.throttle'],
 		'limit' => config('api.rate_limits.sign.limit'),
 		'expires' => config('api.rate_limits.sign.expires')
@@ -37,7 +39,9 @@ $api->version('v1', [
 		$api->delete('authorizations/current', 'AuthorizationsController@destory');
 	});
 
+	// 登录成功
 	$api->group([
+		// 节流限制设定
 		'middleware' => ['api.throttle'],
 		'limit' => config('api.rate_limits.access.limit'),
 		'expires' => config('api.rate_limits.access.expires')
@@ -50,6 +54,10 @@ $api->version('v1', [
 		], function ($api) {
 			// 当前登录用户信息
 			$api->get('user', 'UsersController@me')->name('api.user.show');
+			// 编辑登录用户信息
+			$api->patch('user', 'UsersController@update')->name('api.user.update');
+			// 图片资源
+			$api->post('images', 'ImagesController@store')->name('api.images.store');
 		});
 	});
 });
