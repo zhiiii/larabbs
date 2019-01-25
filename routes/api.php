@@ -27,5 +27,13 @@ $api->version('v1', [
 		$api->post('users', 'UsersController@store');
 		// 验证码
 		$api->post('captchas', 'CaptchasController@store');
+		// 第三方登录
+		$api->post('socials/{social_type}/authorizations', 'AuthorizationsController@socialStore');
+		// 登录
+		$api->post('authorizations', 'AuthorizationsController@store');
+		// 刷新token
+		$api->put('authorizations/current', 'AuthorizationsController@update');
+		// 删除token
+		$api->delete('authorizations/current', 'AuthorizationsController@destory');
 	});
 });
