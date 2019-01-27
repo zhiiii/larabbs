@@ -60,6 +60,10 @@ $api->version('v1', [
 			$api->post('images', 'ImagesController@store')->name('api.images.store');
 			// 发布话题
 			$api->post('topics', 'TopicsController@store')->name('api.topics.store');
+			// 编辑话题
+			$api->patch('topics/{topic}', 'TopicsController@update')->name('api.topics.update');
+			// 删除话题
+			$api->delete('topics/{topic}', 'TopicsController@destroy')->name('api.topics.destroy');
 		});
 	});
 });
