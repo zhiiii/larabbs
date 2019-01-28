@@ -14,6 +14,7 @@ $api = app('Dingo\Api\Routing\Router');
 
 $api->version('v1', [
     'namespace' => 'App\Http\Controllers\Api',
+	'middleware' => ['bindings'],
 ], function ($api) {
 
 	// 未登录
@@ -47,7 +48,15 @@ $api->version('v1', [
 		'expires' => config('api.rate_limits.access.expires')
 	], function ($api) {
 		// 游客可以访问的接口
+		// 分类列表
 		$api->get('categories', 'CategoriesController@index')->name('api.categories.index');
+		// 帖子列表
+		$api->get('topics', 'TopicsController@index')->name('api.topics.index');
+		// 用户发表的帖子
+		$api->get('users/{user}/topics', 'TopicsController@userIndex')->name('api.users.topics.index');
+		// 帖子详情
+		$api->get('topics/{topic}', 'TopicsController@show')->name('api.topics.show');
+
 		// 需要token验证的接口
 		$api->group([
 			'middleware' => ['api.auth'],
