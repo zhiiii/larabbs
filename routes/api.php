@@ -40,7 +40,6 @@ $api->version('v1', [
 		$api->delete('authorizations/current', 'AuthorizationsController@destory');
 	});
 
-	// 登录成功
 	$api->group([
 		// 节流限制设定
 		'middleware' => ['api.throttle'],
@@ -56,8 +55,12 @@ $api->version('v1', [
 		$api->get('users/{user}/topics', 'TopicsController@userIndex')->name('api.users.topics.index');
 		// 帖子详情
 		$api->get('topics/{topic}', 'TopicsController@show')->name('api.topics.show');
+		// 帖子回复列表
+		$api->get('topics/{topic}/replies', 'RepliesController@index')->name('api.topics.replies.index');
+		// 某用户回复列表
+		$api->get('users/{user}/replies', 'RepliesController@userIndex')->name('api.users.replies.index');
 
-		// 需要token验证的接口
+		// 需要登录
 		$api->group([
 			'middleware' => ['api.auth'],
 		], function ($api) {
