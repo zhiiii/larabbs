@@ -2,6 +2,8 @@
 
 namespace App\Providers;
 
+use Illuminate\Auth\Access\AuthorizationException;
+use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Support\ServiceProvider;
 
 class AppServiceProvider extends ServiceProvider
@@ -43,5 +45,13 @@ class AppServiceProvider extends ServiceProvider
 		    $fractal->setSerializer($serializer);
 		    return new \Dingo\Api\Transformer\Adapter\Fractal($fractal);
 	    });
+
+        \API::error(function (ModelNotFoundException $exception) {
+			abort(404);
+        });
+
+        \API::error(function (AuthorizationException $exception) {
+			abort(403);
+        });
     }
 }
